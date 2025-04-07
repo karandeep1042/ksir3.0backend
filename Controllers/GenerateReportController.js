@@ -89,10 +89,10 @@ const downloadPDF = async (req, res) => {
         // });
         const browser = await chromium.puppeteer.launch({
             args: chromium.args,
-            executablePath: await chromium.executablePath || process.env.PUPPETEER_EXECUTABLE_PATH,
+            executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
             headless: chromium.headless,
-          });
-
+            defaultViewport: chromium.defaultViewport,
+        });
         const page = await browser.newPage();
         await page.goto(`https://ksir3-0backend.onrender.com/generatepdf/${req.params.subjectID}/${req.params.division}/${req.params.semester}`, {
             waitUntil: "networkidle2"
