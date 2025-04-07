@@ -8,8 +8,9 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const os = require('os');
-
+const PORT = process.env.PORT || 4000;
 require('dotenv').config();
+console.log("Server is starting!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 app.use(expressLayouts);
 app.use(express.json());
@@ -21,14 +22,10 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         secure: false,
-        // maxAge: 1000 * 60 * 60 * 24
     }
 }));
 
 app.use(cors({
-    // origin: 'http://localhost:3000',
-    // origin: `http://192.168.1.5:3000`,
-    origin: `http://192.168.1.2:3000`,
     methods: ["POST", "GET"],
     credentials: true
 }));
@@ -38,7 +35,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-app.listen(4000, () => {
+app.listen(PORT, () => {
     console.log("Listening to port 4000");
 });
 
