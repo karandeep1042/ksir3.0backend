@@ -52,8 +52,11 @@ const getuserdetails = (req, res) => {
             console.log(err);
         } else if (data.length != 0) {
             const accessToken = jwt.sign({ userId: data[0].user_id, username: data[0].user_name, isAdmin: data[0].adminpermission, uemail: data[0].user_email }, process.env.jwt_key)
-            // console.log(data);
-            res.cookie('token', accessToken, { httpOnly: true, sameSite: 'strict', maxAge: 3600000 });
+            console.log(accessToken);
+            res.cookie('token', accessToken, { httpOnly: true, 
+                sameSite: 'None', 
+                secure: true, 
+                maxAge: 3600000 });
             res.json({ msg: "valid", data, accessToken });
         } else {
             res.status(401).json({ msg: "invalid" });

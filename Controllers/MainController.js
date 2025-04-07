@@ -13,7 +13,7 @@ const con = mysql.createConnection({
 //Authorization starts
 function verifyToken(req, res, next) {
     const token = req.cookies.token;
-
+    console.log(token);
     if (token) {
         jwt.verify(token, process.env.jwt_key, (err, data) => {
             if (err) {
