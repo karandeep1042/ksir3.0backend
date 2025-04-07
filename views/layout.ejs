@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            background-color: black;
+
+        }
+
+        table th {
+            background-color: lightgrey;
+            width: 12.5vw;
+        }
+
+        table td {
+            background-color: white;
+            padding: 15px 0;
+        }
+
+        .pdfheader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pdfheadersection1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* gap: 2vw; */
+        }
+
+        .pdflogoheader {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .pdfheadersection2 {
+            display: flex;
+            flex-direction: column;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pdfheader">
+        <div class="pdfheadersection1">
+            <div class="pdflogo">
+                <img src="/DAV logo.jpeg" alt="" width="180" height="150">
+            </div>
+            <div class="pdflogoheader">
+                Ramanand Arya D.A.V College
+            </div>
+        </div>
+        <div class="pdfheadersection2">
+            <p>Subject : <%= subject %>
+            </p>
+            <p>Div : <%= division %>
+            </p>
+            <p>Semster : <%= semester %>
+            </p>
+            <p>Final Attaintment : <%= finalscore %>
+            </p>
+        </div>
+    </div>
+    <table>
+        <tr>
+            <th>Roll no</th>
+            <th>CO1</th>
+            <th>CO2</th>
+            <th>CO3</th>
+            <th>CO4</th>
+            <th>CO5</th>
+            <th>CO6</th>
+            <th>Score</th>
+            <th>Attaintment</th>
+        </tr>
+        <% if(data.length>0){
+            for(let i=0 ; i<data.length;i++){ %>
+                <tr align="center">
+                    <td>
+                        <%= data[i].student_rollno %>
+                    </td>
+                    <%if(data[i].Q1>0){
+                        %>
+                        <td>
+                            1
+                        </td>
+                        <%} else{%>
+                            <td>
+                                0
+                            </td>
+
+                            <%} %>
+                                <%if(data[i].Q2>0){
+                                    %>
+                                    <td>
+                                        1
+                                    </td>
+                                    <%} else{%>
+                                        <td>
+                                            0
+                                        </td>
+
+                                        <%} %>
+                                            <%if(data[i].Q3>0){
+                                                %>
+                                                <td>
+                                                    1
+                                                </td>
+                                                <%} else{%>
+                                                    <td>
+                                                        0
+                                                    </td>
+
+                                                    <%} %>
+                                                        <%if(data[i].Q4>0){
+                                                            %>
+                                                            <td>
+                                                                1
+                                                            </td>
+                                                            <%} else{%>
+                                                                <td>
+                                                                    0
+                                                                </td>
+
+                                                                <%} %>
+                                                                    <%if(data[i].Q5>0){
+                                                                        %>
+                                                                        <td>
+                                                                            1
+                                                                        </td>
+                                                                        <%} else{%>
+                                                                            <td>
+                                                                                0
+                                                                            </td>
+
+                                                                            <%} %>
+                                                                                <%if(data[i].Q6>0){
+                                                                                    %>
+                                                                                    <td>
+                                                                                        1
+                                                                                    </td>
+                                                                                    <%} else{%>
+                                                                                        <td>
+                                                                                            0
+                                                                                        </td>
+
+                                                                                        <%} %>
+                                                                                            <td>
+                                                                                                <%= data[i].score %>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <%= data[i].attaintment
+                                                                                                    %>
+                                                                                            </td>
+                </tr>
+                <%} } %>
+    </table>
+</body>
+
+</html>
