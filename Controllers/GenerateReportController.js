@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
-const chromium = require('chrome-aws-lambda');
+const chromium = require('@sparticuz/chromium');
+const puppeteer = require('puppeteer');
 const path = require('path');
 require('dotenv').config();
 const con = mysql.createConnection({
@@ -40,8 +41,6 @@ const generatePDF = async (req, res) => {
                 } else {
                     let totalscore = 0;
                     for (let i = 0; i < data.length; i++) {
-                        // console.log(data[i].Q1);
-
                         let elescore = 0;
                         if (data[i].Q1 > 0) {
                             elescore++;
@@ -78,22 +77,30 @@ const generatePDF = async (req, res) => {
 }
 
 const downloadPDF = async (req, res) => {
-    // console.log(req.params.subjectID);
+    const isProd = process.env.NODE_ENV === 'production';
 
+    let browser;
     try {
-        // const browser = await puppeteer.launch();
-        // const browser = await puppeteer.launch({
-        //     headless: true,
-        //     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        //     executablePath: revisionInfo.executablePath
-        // });
-        const browser = await chromium.puppeteer.launch({
-            args: chromium.args,
-            executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
-            headless: chromium.headless,
-            defaultViewport: chromium.defaultViewport,
-        });
+        if (isProd) {
+            const chromium = require('@sparticuz/chromium');
+            const puppeteer = require('puppeteer');
+
+            browser = await puppeteer.launch({
+                args: chromium.args,
+                executablePath: await chromium.executablePath(),
+                headless: chromium.headless,
+            });
+        } else {
+            const puppeteer = require('puppeteer');
+
+            browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            });
+        }
+
         const page = await browser.newPage();
+
         await page.goto(`https://ksir3-0backend.onrender.com/generatepdf/${req.params.subjectID}/${req.params.division}/${req.params.semester}`, {
             waitUntil: "networkidle2"
         });
@@ -102,25 +109,28 @@ const downloadPDF = async (req, res) => {
 
         const todaydate = new Date();
         const filename = todaydate.getTime() + ".pdf";
-        const pdfn = await page.pdf({
-            path: `${path.join(__dirname, '../files', filename)}`,
+        const pdfPath = path.join(__dirname, '../files', filename);
+
+        await page.pdf({
+            path: pdfPath,
             printBackground: true,
             format: "A4"
-        })
+        });
 
         await browser.close();
 
-        const pdfURL = path.join(__dirname, '../files', filename);
-
-        res.download(pdfURL, (err) => {
+        res.download(pdfPath, (err) => {
             if (err) {
-                console.log(err);
+                console.log("Download error:", err);
+                res.status(500).send("Could not download the file.");
             }
-        })
-    } catch (error) {
-        console.log(error.message);
+        });
 
+    } catch (error) {
+        console.log("PDF generation error:", error.message);
+        res.status(500).send("Failed to generate PDF.");
+        if (browser) await browser.close();
     }
-}
+};
 
 module.exports = { fetchreport, generatePDF, downloadPDF }
