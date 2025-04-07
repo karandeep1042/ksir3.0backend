@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
+const chromium = require('chrome-aws-lambda');
 const path = require('path');
 require('dotenv').config();
 const con = mysql.createConnection({
@@ -82,12 +83,13 @@ const downloadPDF = async (req, res) => {
 
     try {
         // const browser = await puppeteer.launch();
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-          });
+        const browser = await chromium.puppeteer.launch({
+            args: chromium.args,
+            executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
+            headless: chromium.headless,
+        });
         const page = await browser.newPage();
-        await page.goto(`http://localhost:4000/generatepdf/${req.params.subjectID}/${req.params.division}/${req.params.semester}`, {
+        await page.goto(`https://ksir3-0backend.onrender.com/generatepdf/${req.params.subjectID}/${req.params.division}/${req.params.semester}`, {
             waitUntil: "networkidle2"
         });
 

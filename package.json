@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "chrome-aws-lambda": "^10.1.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -25,7 +26,7 @@
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.7",
     "pdf-creator-node": "^2.3.5",
-    "puppeteer": "^23.6.0"
+    "puppeteer-core": "^10.1.0"
   },
   "description": ""
 }
