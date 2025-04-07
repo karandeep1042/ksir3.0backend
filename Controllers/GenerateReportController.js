@@ -1,5 +1,7 @@
 const mysql = require('mysql2');
 const puppeteer = require('puppeteer');
+const browserFetcher = puppeteer.createBrowserFetcher();
+const revisionInfo = await browserFetcher.download('1350942'); 
 const path = require('path');
 require('dotenv').config();
 const con = mysql.createConnection({
@@ -84,8 +86,9 @@ const downloadPDF = async (req, res) => {
         // const browser = await puppeteer.launch();
         const browser = await puppeteer.launch({
             headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-          });
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            executablePath: revisionInfo.executablePath
+        });
         const page = await browser.newPage();
         await page.goto(`https://ksir3-0backend.onrender.com/generatepdf/${req.params.subjectID}/${req.params.division}/${req.params.semester}`, {
             waitUntil: "networkidle2"
