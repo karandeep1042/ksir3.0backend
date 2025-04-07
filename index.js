@@ -26,6 +26,7 @@ app.use(session({
 }));
 
 app.use(cors({
+    origin: [process.env.FRONTEND_URL],
     methods: ["POST", "GET"],
     credentials: true
 }));
@@ -38,25 +39,3 @@ app.use(express.static('public'));
 app.listen(PORT, () => {
     console.log("Listening to port 4000");
 });
-
-function getWifiIPv4Address() {
-    const networkInterfaces = os.networkInterfaces();
-
-    for (const interfaceName in networkInterfaces) {
-        const interfaceDetails = networkInterfaces[interfaceName];
-
-        for (const detail of interfaceDetails) {
-            if (
-                detail.family === 'IPv4' && // Check for IPv4
-                !detail.internal && // Exclude internal addresses (like 127.0.0.1)
-                detail.address // Ensure address is valid
-            ) {
-                console.log(`IPv4 address: ${detail.address}`);
-                // return detail.address;
-            }
-        }
-    }
-    return 'localhost';
-}
-
-getWifiIPv4Address();
