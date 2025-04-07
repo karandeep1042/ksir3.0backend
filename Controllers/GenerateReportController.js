@@ -81,7 +81,11 @@ const downloadPDF = async (req, res) => {
     // console.log(req.params.subjectID);
 
     try {
-        const browser = await puppeteer.launch();
+        // const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+          });
         const page = await browser.newPage();
         await page.goto(`http://localhost:4000/generatepdf/${req.params.subjectID}/${req.params.division}/${req.params.semester}`, {
             waitUntil: "networkidle2"
