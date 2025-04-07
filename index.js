@@ -37,5 +37,5 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.listen(PORT, () => {
-    console.log("Listening to port 4000");
+    console.log("Listening to port ", PORT);
 });
