@@ -85,7 +85,7 @@ const downloadPDF = async (req, res) => {
         // const browser = await puppeteer.launch();
         const browser = await chromium.puppeteer.launch({
             args: chromium.args,
-            executablePath: await chromium.executablePath || '/usr/bin/chromium-browser',
+            executablePath: await chromium.executablePath,
             headless: chromium.headless,
         });
         const page = await browser.newPage();
